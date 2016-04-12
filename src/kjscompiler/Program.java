@@ -154,6 +154,7 @@ public class Program {
 				settings.getOutput(), compilationLevel, pExternals);
 		compiler.setWrapper(settings.getWrapper());
 		compiler.setWarningLevel(WarningLevel.VERBOSE);
+		compiler.setPrettyPrint(settings.getPrettyPrint());
 		compiler.run();
 		System.out.println("Compiled file: " + settings.getOutput());
 

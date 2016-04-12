@@ -38,12 +38,24 @@ public class GoogleClosureCompiler {
 
 	private Level loggingLevel = Level.OFF;
 	private WarningLevel warningLevel = WarningLevel.QUIET;
+	private boolean prettyPrint = false;
 
 	private JSError[] warnings;
 	private JSError[] errors;
 
 	private String compileNotes = "/** \n" + "* @ignore\n" + "**/",
 			oHolder = "%output%";
+
+	/**
+	 * @return pretty print option value
+     */
+	public boolean getPrettyPrint() {
+		return prettyPrint;
+	}
+
+	public void setPrettyPrint(boolean prettyPrint) {
+		this.prettyPrint = prettyPrint;
+	}
 
 	/**
 	 * @return the compilationLevel
@@ -76,15 +88,14 @@ public class GoogleClosureCompiler {
 	}
 
 	/**
-	 * @return the output
+	 * @return wrapper
 	 */
 	public String getWrapper() {
 		return wrapper;
 	}
 
 	/**
-	 * @param output
-	 *            the output to set
+	 * @param wrapper wrapper
 	 */
 	public void setWrapper(String wrapper) {
 		this.wrapper = wrapper;
@@ -178,6 +189,8 @@ public class GoogleClosureCompiler {
 		com.google.javascript.jscomp.Compiler compiler = new com.google.javascript.jscomp.Compiler();
 
 		CompilerOptions options = new CompilerOptions();
+
+		options.prettyPrint = prettyPrint;
 
 		CompilationLevel compilationLevel = CompilationLevel.SIMPLE_OPTIMIZATIONS;
 

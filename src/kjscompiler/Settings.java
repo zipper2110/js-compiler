@@ -33,6 +33,7 @@ import org.json.simple.parser.ParseException;
 public class Settings {
 	private String output, level, pattern, wrapper, projectPath;
 	private JSONArray baseDir;
+	private boolean prettyPrint;
 
 	public Settings(String path) throws ParseException, FileNotFoundException,
 			IOException {
@@ -57,6 +58,9 @@ public class Settings {
 		this.pattern = (String) obj.get("pattern");
 		this.wrapper = obj.get("wrapper") != null?(String) obj.get("wrapper"): "";
 		this.projectPath = dir.getCanonicalPath();
+		if(obj.containsKey("prettyPrint")) {
+			prettyPrint = (boolean) obj.get("prettyPrint");
+		}
 		
 		dir = new File(this.projectPath, this.output);
 		this.output = dir.getCanonicalPath();
@@ -112,5 +116,9 @@ public class Settings {
 	 */
 	public String getProjectPath(){
 		return projectPath;
+	}
+
+	public boolean getPrettyPrint() {
+		return prettyPrint;
 	}
 }

@@ -2,3 +2,5 @@ manifest.mf
 nbproject/*
 dist/*
 build/*
+out/*
+.idea/*
