@@ -1,5 +1,5 @@
 {
-	"basedir": "js",
+	"basedir": "js\\o5.js",
 	"output": "js.min/all.js",
 	"level": "SIMPLE_OPTIMIZATIONS",
 	"pattern": "*.js",

@@ -19,8 +19,7 @@
 package kjscompiler;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -50,4 +49,26 @@ public class FileScanner {
 		}
 	}
 
+	public static Set<String> resolveDependencies(Collection<String> seedFiles) {
+		HashSet<String> fileDependencies = new HashSet<String>();
+		for(String seedFile : seedFiles) {
+			fileDependencies.addAll(resolveDependencies(seedFile));
+		}
+		return fileDependencies;
+	}
+
+	public static Set<String> resolveDependencies(String fileName) {
+		HashSet<String> fileDependencies = new HashSet<String>();
+
+		FileInfo fileInfo = new FileInfo(fileName);
+
+		if(!fileInfo.getIsIgnore() && !fileInfo.getIsExternal()) {
+			for(String dependencyFileName : fileInfo.getDependencies()) {
+				fileDependencies.addAll(resolveDependencies(dependencyFileName));
+			}
+			fileDependencies.add(fileName);
+		}
+
+		return fileDependencies;
+	}
 }

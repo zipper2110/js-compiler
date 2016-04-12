@@ -21,11 +21,10 @@ package kjscompiler;
 import com.google.javascript.jscomp.JSError;
 import com.google.javascript.jscomp.WarningLevel;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import org.json.simple.*;
 import org.json.simple.parser.ParseException;
@@ -104,10 +103,23 @@ public class Program {
 				+ settings.getBaseDir());
 
 		JSONArray Base = settings.getBaseDir();
-		List<String> files = new ArrayList<String>();
+
+		HashSet<String> seedFiles = new HashSet<String>();
+		HashSet<String> files = new HashSet<String>();
 		for (int i = 0; i < Base.size(); i++) {
-			files.addAll(FileScanner.run((String) Base.get(i), settings.getPattern(), settings.getProjectPath()));
+			File file = new File(settings.getProjectPath() + File.separator + Base.get(i));
+			if(file.exists()) {
+				if(file.isFile()) {
+					seedFiles.add(file.getCanonicalPath());
+				} else if (file.isDirectory()) {
+					files.addAll(FileScanner.run((String) Base.get(i), settings.getPattern(), settings.getProjectPath()));
+				}
+			}
 		}
+
+		Set<String> dependencyFiles = FileScanner.resolveDependencies(seedFiles);
+		files.addAll(dependencyFiles);
+
 		System.out.println("Found " + files.size() + " files");
 
 		List<FileInfo> fiPrimaries = new ArrayList<FileInfo>();
